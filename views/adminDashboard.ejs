@@ -3,12 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>InfraTracker Admin</title>
+    <title>Administratorski Panel</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
-    
 
-    
+<div class="container mt-4">
+    <h2>Administratorski Panel</h2>
+
+    <!-- Pregled, filtriranje i pretraga prijava -->
+    <div class="card">
+        <div class="card-header">
+            Pregled, filtriranje i pretraga prijava
+        </div>
+        <div class="card-body">
+            <!-- Tabela sa prijavama -->
+            <!-- Implementirajte funkcionalnost za pregled, filtriranje i pretragu prijava -->
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>ID Prijave</th>
+                    <th>Status</th>
+                    <th>Kategorija</th>
+                    <th>Opis</th>
+                    <th>Akcije</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- Prikaz prijava -->
+                <!-- Dodajte dinamičko generisanje redova tabele sa podacima o prijavama -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Označavanje prijava -->
+    <div class="card mt-4">
+        <div class="card-header">
+            Označavanje prijava
+        </div>
+        <div class="card-body">
+            <!-- Forma za označavanje prijava -->
+            <!-- Implementirajte funkcionalnost za označavanje prijava kao riješenih ili za dalje rješavanje -->
+            <form>
+                <div class="form-group">
+                    <label for="selectedStatus">Odaberi status:</label>
+                    <select class="form-control" id="selectedStatus" name="selectedStatus">
+                        <option value="rijeseno">Riješeno</option>
+                        <option value="daljeRjesavanje">Dalje rješavanje</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="comments">Komentari:</label>
+                    <textarea class="form-control" id="comments" name="comments" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Potvrdi</button>
+            </form>
+        </div>
+    </div>
+
+
+
+    <!-- Statistike i Izvještaji -->
+    <div class="card mt-4">
+        <div class="card-header">
+            Statistike i Izvještaji
+        </div>
+        <div class="card-body">
+            <!-- Implementirajte grafikone i izveštaje za administratore -->
+            <!-- Ovde možete koristiti različite JavaScript biblioteke za grafikone, npr. Chart.js -->
+        </div>
+    </div>
+
+    <!-- Arhiviranje -->
+    <div class="card mt-4">
+        <div class="card-header">
+            Arhiviranje
+        </div>
+        <div class="card-body">
+            <!-- Implementirajte funkcionalnost za arhiviranje i praćenje historije riješenih ili zatvorenih prijava -->
+            <button class="btn btn-warning">Arhiviraj Prijave</button>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
 </body>
 </html>

@@ -20,6 +20,13 @@
     <!-- Login Form -->
     <div class="col-md-6 mx-auto">
         <h2 class="text-center">Login</h2>
+
+        <% if (locals.errorMessage) { %>
+            <div class="alert alert-danger" role="alert">
+                <%= locals.errorMessage %>
+            </div>
+        <% } %>
+
         <form id="loginForm" action="/login" method="post">
             <div class="form-group">
                 <label for="username">Username:</label>

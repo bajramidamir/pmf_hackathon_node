@@ -30,7 +30,18 @@ async function insertUser(username, mail, u_password, u_name, u_surname) {
     };
 };
 
+async function getUserByEmail(mail) {
+    const client = await pool.connect();
+    try {
+        const result = await client.query("SELECT * FROM users WHERE mail = $1", [mail]);
+        return result.rows;
+    } finally {
+        client.release();
+    };
+};
+
 module.exports = {
     getUserByUsername,
     insertUser,
+    getUserByEmail,
 };

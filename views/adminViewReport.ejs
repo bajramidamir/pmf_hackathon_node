@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detaljan pregled prijave <%= report.report_id %></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+
+
+    <%= report.coordinates[0] %>
+    
+
+    <div class="container-fluid mt-4">
+
+        <div class="card">
+            <div class="card-header">
+                Detalji o prijavi
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Report ID</th>
+                            <th>Prijavitelj</th>
+                            <th>Opis</th>
+                            <th>Status</th>
+                            <th>Kategorija</th>
+                            <th>Podkategorija</th>
+                            <th>Datum prijave</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><%= report.report_id %></td>
+                            <td><%= report.user_id %></td>
+                            <td><%= report.description %></td>
+                            <td><%= report.status %></td>
+                            <td><%= report.category %></td>
+                            <td><%= report.subcategory %></td>
+                            <td><%= report.created_at %></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        
+        
+        
+
+        <div class="card mt-4">
+            <div class="card-header">
+                Označavanje prijava
+            </div>
+            <div class="card-body">
+                <!-- Forma za označavanje prijava -->
+                <!-- Implementirajte funkcionalnost za označavanje prijava kao riješenih ili za dalje rješavanje -->
+                <form>
+                    <div class="form-group">
+                        <label for="selectedStatus">Odaberi status:</label>
+                        <select class="form-control" id="selectedStatus" name="selectedStatus">
+                            <option value="rijeseno">Riješeno</option>
+                            <option value="daljeRjesavanje">Dalje rješavanje</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="comments">Komentari:</label>
+                        <textarea class="form-control" id="comments" name="comments" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Potvrdi</button>
+                </form>
+            </div>
+        </div>
+    
+    </div>
+    
+
+
+
+
+
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <script>
+        const map = L.map('map').setView([43.8563, 18.4131], 12);
+
+        // Dodajte OpenStreetMap.Mapnik sloj (regular map)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Dodajte marker sloj
+        const markerLayer = L.layerGroup().addTo(map);
+
+        let lastClickedCoordinates = null;
+
+        // klikamo mapu
+        map.on('click', function (event) {
+        markerLayer.clearLayers();
+
+        // Sačuvajte koordinate u promenljivama
+        lastClickedCoordinates = {
+            lat: event.latlng.lat,
+            lng: event.latlng.lng
+        };
+
+        const marker = L.marker(lastClickedCoordinates).addTo(markerLayer);
+
+        const coordinatesInput = document.getElementById('coordinatesInput');
+        coordinatesInput.value = JSON.stringify(lastClickedCoordinates);
+
+        console.log('lastClickedCoordinates:', lastClickedCoordinates);
+        console.log('coordinatesInput.value:', coordinatesInput.value);
+
+        // Dodajte još iskaza za praćenje toka podataka
+        });
+    </script>
+
+</body>
+</html>

@@ -25,11 +25,27 @@
                     <th>ID Prijave</th>
                     <th>Status</th>
                     <th>Kategorija</th>
+                    <th>Podkategorija</th>
                     <th>Opis</th>
-                    <th>Akcije</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
+                <% reports.forEach(report => { %>
+                    <tr>
+                        <td><%= report.report_id %></td>
+                        <td><%= report.status %></td>
+                        <td><%= report.category %></td>
+                        <td><%= report.subcategory %></td>
+                        <td><%= report.description %></td>
+                        <td>
+                            <form action="/admin_dashboard/view_report">
+                                <input type="hidden" name="reportId" value="<%= report.report_id %>">
+                                <button class="btn btn-primary">Pregled</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }); %>
                 <!-- Prikaz prijava -->
                 <!-- Dodajte dinamičko generisanje redova tabele sa podacima o prijavama -->
                 </tbody>
@@ -38,29 +54,7 @@
     </div>
 
     <!-- Označavanje prijava -->
-    <div class="card mt-4">
-        <div class="card-header">
-            Označavanje prijava
-        </div>
-        <div class="card-body">
-            <!-- Forma za označavanje prijava -->
-            <!-- Implementirajte funkcionalnost za označavanje prijava kao riješenih ili za dalje rješavanje -->
-            <form>
-                <div class="form-group">
-                    <label for="selectedStatus">Odaberi status:</label>
-                    <select class="form-control" id="selectedStatus" name="selectedStatus">
-                        <option value="rijeseno">Riješeno</option>
-                        <option value="daljeRjesavanje">Dalje rješavanje</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="comments">Komentari:</label>
-                    <textarea class="form-control" id="comments" name="comments" rows="3"></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Potvrdi</button>
-            </form>
-        </div>
-    </div>
+    
 
 
 

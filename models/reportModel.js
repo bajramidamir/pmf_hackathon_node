@@ -25,7 +25,7 @@ async function getReportById(reportId) {
     const client = await pool.connect();
     try {
         const result = await client.query("SELECT * FROM reports WHERE report_id = $1", [reportId]);
-        return result.rows;
+        return result.rows[0];
     } finally {
         client.release();
     };
@@ -53,6 +53,7 @@ async function userInsertReport(userId, description, coordinatesObject, category
         client.release();
     };
 };
+
 
 
 

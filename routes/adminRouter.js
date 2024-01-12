@@ -4,10 +4,24 @@ const cookie = require('cookie');
 
 const userController = require('../controllers/userController');
 const userModel = require('../models/userModel');
+const reportController = require('../controllers/reportController');
+const reportModel = require("../models/reportModel");
 
 router.get('/', ensureAuthenticated, ensureAdmin, async (req, res) => {
+    const reports = await reportModel.getAllReports();
     try {
-        res.render('adminDashboard');
+        res.render('adminDashboard', { reports });
+    } catch(error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
+    };
+});
+
+router.get('/view_report', ensureAuthenticated, ensureAdmin, async (req, res) => {
+    const { reportId } = req.query;
+    const report = await reportModel.getReportById(reportId);
+    try {
+        res.render("adminViewReport", { report });
     } catch(error) {
         console.error(error);
         res.status(500).send("Internal Server Error");

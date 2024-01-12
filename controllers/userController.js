@@ -17,10 +17,12 @@ const getHashedPassword = async (password) => {
 
 const loginUser = async (req, res) => {
     const { username, password } = req.body;
+
     try {
         const user = await userModel.getUserByUsername(username);
+        console.log(user);
         if (user) {
-            bcrypt.compare(password, user.password, (err, result) => {
+            bcrypt.compare(password, user.u_password, (err, result) => {
                 if (result) {
                     const userCookie = cookie.serialize('user', JSON.stringify({
                         id: user.user_id,
@@ -34,7 +36,7 @@ const loginUser = async (req, res) => {
 
                     res.setHeader('Set-Cookie', userCookie);
 
-                    if (user.role === 'admin') {
+                    if (user.roles === 'admin') {
                         res.redirect('/admin_dashboard');
                     } else {
                         res.redirect('/user_dashboard');
@@ -42,6 +44,8 @@ const loginUser = async (req, res) => {
                 };
             });
         };
+
+
     } catch (err) {
         console.error(err);
     };

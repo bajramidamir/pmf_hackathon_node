@@ -9,6 +9,7 @@ const session = require('express-session');
 // routes
 const loginRouter = require('./routes/loginRouter');
 const adminRouter = require('./routes/adminRouter');
+const userRouter = require('./routes/userRouter');
 
 // middleware
 app.use(express.static(path.join(__dirname, 'public')));
@@ -31,6 +32,7 @@ app.set('view engine', 'ejs');
 
 app.use('/', loginRouter);
 app.use('/admin_dashboard', adminRouter);
+app.use('/user_dashboard', userRouter);
 
 
 

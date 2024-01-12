@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unos Korisničkog Izvještaja</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-4">
+    <h2>Unesite Korisnički Izvještaj</h2>
+
+    <form action="/submit-report" method="post">
+        <!-- User ID (You may want to set this automatically based on the logged-in user) -->
+        <div class="form-group">
+            <label for="user_id">User ID:</label>
+            <input type="text" class="form-control" id="user_id" name="user_id" required>
+        </div>
+
+        <!-- Description -->
+        <div class="form-group">
+            <label for="description">Opis:</label>
+            <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+        </div>
+
+        <!-- Location -->
+        <div class="form-group">
+            <label for="location">Lokacija:</label>
+            <input type="text" class="form-control" id="location" name="location">
+            <small class="form-text text-muted">Unesite koordinate u formatu "lat, lng".</small>
+        </div>
+
+        <!-- Status -->
+        <div class="form-group">
+            <label for="status">Status:</label>
+            <select class="form-control" id="status" name="status">
+                <option value="Pending">Pending</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Resolved">Resolved</option>
+            </select>
+        </div>
+
+        <!-- Category -->
+        <div class="form-group">
+            <label for="category">Kategorija:</label>
+            <input type="text" class="form-control" id="category" name="category">
+        </div>
+
+        <!-- Subcategory -->
+        <div class="form-group">
+            <label for="subcategory">Podkategorija:</label>
+            <input type="text" class="form-control" id="subcategory" name="subcategory">
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary">Potvrdi Izvještaj</button>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>

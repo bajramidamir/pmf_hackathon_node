@@ -25,7 +25,7 @@ const loginUser = async (req, res) => {
             bcrypt.compare(password, user.u_password, (err, result) => {
                 if (result) {
                     const userCookie = cookie.serialize('user', JSON.stringify({
-                        id: user.user_id,
+                        id: user.id,
                         username: user.username,
                         password: user.u_password,
                         role: user.roles,

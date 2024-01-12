@@ -60,9 +60,11 @@
             <div class="card-body">
                 <!-- Forma za označavanje prijava -->
                 <!-- Implementirajte funkcionalnost za označavanje prijava kao riješenih ili za dalje rješavanje -->
-                <form>
+                <form method="post" action="/admin_dashboard/send-comment">
                     <div class="form-group">
                         <label for="selectedStatus">Odaberi status:</label>
+                        <input type="hidden" name="report_id" value="<%= report.report_id%>">
+                        <input type="hidden" name="user_id" value="<%= report.user_id%>">
                         <select class="form-control" id="selectedStatus" name="selectedStatus">
                             <option value="rijeseno">Riješeno</option>
                             <option value="daljeRjesavanje">Dalje rješavanje</option>

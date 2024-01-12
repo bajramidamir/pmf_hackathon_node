@@ -67,4 +67,4 @@ const createUser = async (req, res) => {
 module.exports = {
     loginUser,
     createUser
-}
+};

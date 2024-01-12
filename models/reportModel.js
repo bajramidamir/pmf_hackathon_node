@@ -11,26 +11,30 @@ const config = {
 
 const pool = new pg.Pool(config);
 
-async function getUserByUsername(username) {
+async function getAllReports() {
     const client = await pool.connect();
     try {
-        const result = await client.query("SELECT * FROM users WHERE username = $1", [username]);
-        return result.rows[0];
+        const result = await client.query("SELECT * FROM reports");
+        return result.rows;
     } finally {
         client.release();
     };
 };
 
-async function insertUser(username, mail, u_password, u_name, u_surname) {
+async function getReportById(reportId) {
     const client = await pool.connect();
     try {
-        await client.query("INSERT INTO users(username, mail, u_password, u_name, u_surname) VALUES ($1, $2, $3, $4, $5)", [username, mail, u_password, u_name, u_surname]);
+        const result = await client.query("SELECT * FROM reports WHERE report_id = $1", [reportId]);
+        return result.rows;
     } finally {
         client.release();
     };
 };
+
+
+
 
 module.exports = {
-    getUserByUsername,
-    insertUser,
+    getAllReports,
+    getReportById
 };

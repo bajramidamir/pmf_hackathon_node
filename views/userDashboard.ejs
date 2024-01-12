@@ -36,9 +36,10 @@
 </head>
 
 <body>
+
 <div class="container mt-4">
     <h2>Unesite Korisnički Izvještaj</h2>
-    <form action="/submit-report" method="post">
+    <form action="/submit_report" method="post">
 
         <!-- Description -->
         <div class="form-group">
@@ -52,7 +53,7 @@
         <!-- Kategorija -->
         <div class="form-group">
             <label for="category">Odaberite kategoriju:</label>
-            <select id="category" class="form-control custom-dropdown" onchange="populateSubcategories()" required>
+            <select id="category" class="form-control custom-dropdown" name="category" onchange="populateSubcategories()" required>
                 <option value="" disabled selected hidden>Odaberite kategoriju...</option>
                 <option value="put">Putevi</option>
                 <option value="osvetljenje">Osvetljenje</option>
@@ -70,7 +71,7 @@
         <!-- Podkategorija -->
         <div id="subcategories-container" class="form-group subcategories-container">
             <label for="subcategory">Odaberite podkategoriju:</label>
-            <select id="subcategory" class="form-control custom-dropdown" required></select>
+            <select id="subcategory" class="form-control custom-dropdown" name="subcategory" required></select>
         </div>
         <br>
         <button type="submit" class="btn btn-primary">Potvrdi Izvještaj</button>

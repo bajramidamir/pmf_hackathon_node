@@ -36,6 +36,7 @@ const loginUser = async (req, res) => {
 
                     res.setHeader('Set-Cookie', userCookie);
 
+
                     if (user.roles === 'admin') {
                         res.redirect('/admin_dashboard');
                     } else {

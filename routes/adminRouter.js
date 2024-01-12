@@ -6,7 +6,7 @@ const userController = require('../controllers/userController');
 const userModel = require('../models/userModel');
 
 
-router.get('/', ensureAdmin, ensureAuthenticated, async (req, res) => {
+router.get('/', ensureAuthenticated, ensureAdmin, async (req, res) => {
     try {
         res.render('adminDashboard');
     } catch(error) {

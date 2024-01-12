@@ -31,10 +31,31 @@ async function getReportById(reportId) {
     };
 };
 
+async function getReportsByUser(userId) {
+    const client = await pool.connect();
+    try {
+        const result = await client.query("SELECT * FROM reports WHERE user_id = $1", [userId]);
+        return result.rows;
+    } finally {
+        client.release();
+    };
+};
+
+async function userInsertReport(userId, description, location, category, subCategory) {
+    const client = await pool.connect();
+    try {
+        await client.query("INSERT INTO reports(user_id, description, location, category, subcategory) VALUES ($1, $2, $3, $4, $5)", 
+        [userId, description, location, category, subCategory]);
+    } finally {
+        client.release();
+    };
+};
 
 
 
 module.exports = {
     getAllReports,
-    getReportById
+    getReportById,
+    getReportsByUser,
+    userInsertReport,
 };

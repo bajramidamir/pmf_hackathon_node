@@ -17,7 +17,6 @@ const getHashedPassword = async (password) => {
 
 const loginUser = async (req, res) => {
     const { username, password } = req.body;
-
     try {
         const user = await userModel.getUserByUsername(username);
         console.log(user);
@@ -45,8 +44,6 @@ const loginUser = async (req, res) => {
                 };
             });
         };
-
-
     } catch (err) {
         console.error(err);
     };

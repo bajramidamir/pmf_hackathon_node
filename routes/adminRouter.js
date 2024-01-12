@@ -5,7 +5,6 @@ const cookie = require('cookie');
 const userController = require('../controllers/userController');
 const userModel = require('../models/userModel');
 
-
 router.get('/', ensureAuthenticated, ensureAdmin, async (req, res) => {
     try {
         res.render('adminDashboard');
@@ -13,6 +12,11 @@ router.get('/', ensureAuthenticated, ensureAdmin, async (req, res) => {
         console.error(error);
         res.status(500).send("Internal Server Error");
     };
+});
+
+router.get('/logout', (req, res) => {
+    res.clearCookie('user');
+    res.redirect('/');
 });
 
 

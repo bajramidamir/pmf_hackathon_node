@@ -26,6 +26,12 @@ router.post("/submit_report", ensureAuthenticated, ensureAdmin, async (req, res)
     }
 });
 
+router.get('/logout', (req, res) => {
+    res.clearCookie('user');
+    res.redirect('/');
+});
+
+
 
 // helper functions
 function ensureAuthenticated(req, res, next) {

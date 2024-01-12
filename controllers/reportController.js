@@ -19,4 +19,4 @@ async function createReport(req, res) {
 
 module.exports = {
     createReport,
-}
+};

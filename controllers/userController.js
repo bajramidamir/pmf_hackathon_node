@@ -25,20 +25,20 @@ const loginUser = async (req, res) => {
                     const userCookie = cookie.serialize('user', JSON.stringify({
                         id: user.user_id,
                         username: user.username,
-                        role: user.role,
-                        firstName: user.first_name,
-                        lastName: user.last_name,
+                        password: user.u_password,
+                        role: user.roles,
+                        mail: user.mail,
+                        firstName: user.u_name,
+                        surName: user.u_surname,
                     }));
 
                     res.setHeader('Set-Cookie', userCookie);
 
                     if (user.role === 'admin') {
                         res.redirect('/admin_dashboard');
-                    } else if (user.role === 'employee') {
-                        res.redirect('/employee_dashboard');
-                    } else if (user.role === 'project manager') {
-                        res.redirect('/project_manager_dashboard');
-                    }
+                    } else {
+                        res.redirect('/user_dashboard');
+                    };
                 };
             });
         };
@@ -48,15 +48,15 @@ const loginUser = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
-    const { username, password, firstName, lastName, role } = req.body;
+    const { username, mail, password, firstName, lastName } = req.body;
     try {
         const hashedPassword = await getHashedPassword(password);
-        await userModel.insertUser(username, hashedPassword, role, firstName, lastName);
-        res.redirect('/admin_dashboard/users');
+        await userModel.insertUser(username, mail, hashedPassword, firstName, lastName);
+        res.redirect('/');
     } catch (error) {
         console.error(error);
         res.status(500).send('Error creating user');
-    }
+    };
 };
 
 module.exports = {

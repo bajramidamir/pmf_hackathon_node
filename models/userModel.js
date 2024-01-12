@@ -1,6 +1,16 @@
 const pg = require('pg');
 require('dotenv').config();
 
+const config = {
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    database: process.env.DB_DB,
+    password: process.env.DB_PASS,
+    port: process.env.DB_PORT,
+};
+
+const pool = new pg.Pool(config);
+
 async function getUserByUsername(username) {
     const client = await pool.connect();
     try {
@@ -8,5 +18,19 @@ async function getUserByUsername(username) {
         return result.rows[0];
     } finally {
         client.release();
+    };
+};
+
+async function insertUser(username, mail, u_password, u_name, u_surname) {
+    const client = await pool.connect();
+    try {
+        await client.query("INSERT INTO users(username, mail, u_password, u_name, u_surname) VALUES ($1, $2, $3, $4, $5)", [username, mail, u_password, u_name, u_surname]);
+    } finally {
+        client.release();
     }
+}
+
+module.exports = {
+    getUserByUsername,
+    insertUser,
 };

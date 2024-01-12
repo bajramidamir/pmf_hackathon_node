@@ -24,7 +24,7 @@ async function getUserByUsername(username) {
 async function getUserById(user_id){
     const client = await pool.connect();
     try{
-        const result = await client.query("select * from users where user_id = $1", [user_id]);
+        const result = await client.query("select * from users where id = $1", [user_id]);
         return result.rows;
     } finally {
         client.release();

@@ -6,6 +6,7 @@ const userController = require('../controllers/userController');
 const userModel = require('../models/userModel');
 const reportController = require('../controllers/reportController');
 const reportModel = require("../models/reportModel");
+const nodemailer = require("nodemailer");
 
 router.get('/', ensureAuthenticated, ensureAdmin, async (req, res) => {
     const reports = await reportModel.getAllReports();
@@ -35,15 +36,14 @@ router.get('/logout', (req, res) => {
 
 router.post('/send-comment', ensureAuthenticated, ensureAdmin, async (req, res) => {
     console.log('Primljen POST zahtjev na /admin/send-comment');
-    const { selectedStatus, comments } = req.body;
-    const { user_id, report_id } = req.query;
+    const { selectedStatus, comments, report_id, user_id } = req.body;
     console.log(user_id);
 
     try {
         // Prikupite e-poštu korisnika iz baze podataka
         const user = await userModel.getUserById(user_id);
-        const userEmail = user.mail;
-
+        const userEmail = users.mail;
+        console.log(userEmail);
         // Konfiguracija nodemailer transportera
         const transporter = nodemailer.createTransport({
             service: 'outlook',
@@ -76,6 +76,7 @@ router.post('/send-comment', ensureAuthenticated, ensureAdmin, async (req, res) 
         res.status(500).send("Internal Server Error");
     }
 });
+
 
 
 // helper functions 

@@ -26,7 +26,7 @@ function ensureAuthenticated(req, res, next) {
     res.status(401).send("Unauthorized");
 };
 function ensureAdmin(req, res, next) {
-    if (req.user.role === 'admin') {
+    if (req.user.roles === 'admin') {
         return next();
     };
     res.status(403).send('Permission denied');

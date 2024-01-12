@@ -41,15 +41,19 @@ async function getReportsByUser(userId) {
     };
 };
 
-async function userInsertReport(userId, description, location, category, subCategory) {
+async function userInsertReport(userId, description, coordinatesObject, category, subCategory) {
     const client = await pool.connect();
     try {
-        await client.query("INSERT INTO reports(user_id, description, location, category, subcategory) VALUES ($1, $2, $3, $4, $5)", 
-        [userId, description, location, category, subCategory]);
+        const point = `${parseFloat(coordinatesObject.lng)},${parseFloat(coordinatesObject.lat)}`;
+        await client.query(
+            "INSERT INTO reports(user_id, description, coordinates, category, subcategory) VALUES ($1, $2, $3::point, $4, $5)",
+            [userId, description, point, category, subCategory]
+        );
     } finally {
         client.release();
     };
 };
+
 
 
 

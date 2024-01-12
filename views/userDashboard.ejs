@@ -21,8 +21,9 @@
         /* Dodati stilove za smanjenje polja za opis /
         #description {
             resize: vertical;
-            max-height: 200px; / Promeniti na željenu visinu */
-        }
+            max-height: 200px; / Promeniti na željenu visinu
+            } */
+        
 
         /* Dodati stilove za prilagođavanje širine dropdown-a */
         .custom-dropdown {
@@ -39,7 +40,7 @@
 
 <div class="container mt-4">
     <h2>Unesite Korisnički Izvještaj</h2>
-    <form action="/submit_report" method="post">
+    <form action="/user_dashboard/submit_report" method="post">
 
         <!-- Description -->
         <div class="form-group">
@@ -48,7 +49,10 @@
         </div>
 
         <!-- Map -->
-        <div id="map" class="mb-4"></div>
+        <div id="map" class="mb-4">
+        </div>
+
+        <input type="hidden" name="coordinates" id="coordinatesInput" value="">
 
         <!-- Kategorija -->
         <div class="form-group">
@@ -136,30 +140,31 @@
     // Dodajte marker sloj
     const markerLayer = L.layerGroup().addTo(map);
 
-    // Inicijalizacija promenljivih za cuvanje koordinata
     let lastClickedCoordinates = null;
 
-    // Dodajte "klik" događaj na mapu
+    // klikamo mapu
     map.on('click', function (event) {
-        // Uklonite prethodne markere ako postoje
-        markerLayer.clearLayers();
+    markerLayer.clearLayers();
 
-        // Sačuvajte koordinate u promenljivama
-        const coordinates = {
-            lat: event.latlng.lat,
-            lng: event.latlng.lng
-        };
-        console.log(coordinates);
+    // Sačuvajte koordinate u promenljivama
+    lastClickedCoordinates = {
+        lat: event.latlng.lat,
+        lng: event.latlng.lng
+    };
 
-        // Postavite marker na mesto klika
-        const marker = L.marker(coordinates).addTo(markerLayer);
+    const marker = L.marker(lastClickedCoordinates).addTo(markerLayer);
 
-        // Sačuvajte koordinate u promenljivama
-        lastClickedCoordinates = coordinates;
+    const coordinatesInput = document.getElementById('coordinatesInput');
+    coordinatesInput.value = JSON.stringify(lastClickedCoordinates);
+    
+    console.log('lastClickedCoordinates:', lastClickedCoordinates);
+    console.log('coordinatesInput.value:', coordinatesInput.value);
 
-        // Ovde možete dalje manipulisati sa markerom ili koordinatama
-        console.log('Poslednje kliknute koordinate:', lastClickedCoordinates);
-    });
+    // Dodajte još iskaza za praćenje toka podataka
+});
+
+
+    
 </script>
 </body>
 

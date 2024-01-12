@@ -4,6 +4,8 @@ const cookie = require('cookie');
 
 const userController = require('../controllers/userController');
 const userModel = require('../models/userModel');
+const reportController = require('../controllers/reportController');
+const reportModel = require("../models/reportModel");
 
 
 router.get('/', ensureAuthenticated, ensureAdmin, async (req, res) => {
@@ -13,6 +15,15 @@ router.get('/', ensureAuthenticated, ensureAdmin, async (req, res) => {
         console.error(error);
         res.status(500).send("Internal Server Error");
     };
+});
+
+router.post("/submit_report", ensureAuthenticated, ensureAdmin, async (req, res) => {
+    try {
+        reportController.createReport(req, res);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
+    }
 });
 
 

@@ -1,22 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Unos Korisničkog Izvještaja</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-</head>
-<body>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
+    <style>
+
+        * {
+            margin-bottom: 30px;
+        }
+
+        #map {
+            height: 400px;
+        }
+
+        /* Dodati stilove za smanjenje polja za opis /
+        #description {
+            resize: vertical;
+            max-height: 200px; / Promeniti na željenu visinu */
+        }
+
+        /* Dodati stilove za prilagođavanje širine dropdown-a */
+        .custom-dropdown {
+            width: 100%;
+        }
+
+        .subcategories-container {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
 <div class="container mt-4">
     <h2>Unesite Korisnički Izvještaj</h2>
-
     <form action="/submit-report" method="post">
-        <!-- User ID (You may want to set this automatically based on the logged-in user) -->
-        <div class="form-group">
-            <label for="user_id">User ID:</label>
-            <input type="text" class="form-control" id="user_id" name="user_id" required>
-        </div>
 
         <!-- Description -->
         <div class="form-group">
@@ -24,43 +46,120 @@
             <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
         </div>
 
-        <!-- Location -->
-        <div class="form-group">
-            <label for="location">Lokacija:</label>
-            <input type="text" class="form-control" id="location" name="location">
-            <small class="form-text text-muted">Unesite koordinate u formatu "lat, lng".</small>
-        </div>
+        <!-- Map -->
+        <div id="map" class="mb-4"></div>
 
-        <!-- Status -->
+        <!-- Kategorija -->
         <div class="form-group">
-            <label for="status">Status:</label>
-            <select class="form-control" id="status" name="status">
-                <option value="Pending">Pending</option>
-                <option value="In Progress">In Progress</option>
-                <option value="Resolved">Resolved</option>
+            <label for="category">Odaberite kategoriju:</label>
+            <select id="category" class="form-control custom-dropdown" onchange="populateSubcategories()" required>
+                <option value="" disabled selected hidden>Odaberite kategoriju...</option>
+                <option value="put">Putevi</option>
+                <option value="osvetljenje">Osvetljenje</option>
+                <option value="vodovod">Vodovod i Kanalizacija</option>
+                <option value="zelenilo">Zelenilo i Parkovi</option>
+                <option value="signalizacija">Saobraćajna Signalizacija</option>
+                <option value="deca">Igračka Dečja Opema</option>
+                <option value="reciklaza">Smeće i Reciklaža</option>
+                <option value="vandalizam">Vandalizam i Grafiti</option>
+                <option value="zagađenje">Buka i Zagađenje</option>
+                <option value="ostalo">Ostalo</option>
             </select>
         </div>
 
-        <!-- Category -->
-        <div class="form-group">
-            <label for="category">Kategorija:</label>
-            <input type="text" class="form-control" id="category" name="category">
+        <!-- Podkategorija -->
+        <div id="subcategories-container" class="form-group subcategories-container">
+            <label for="subcategory">Odaberite podkategoriju:</label>
+            <select id="subcategory" class="form-control custom-dropdown" required></select>
         </div>
-
-        <!-- Subcategory -->
-        <div class="form-group">
-            <label for="subcategory">Podkategorija:</label>
-            <input type="text" class="form-control" id="subcategory" name="subcategory">
-        </div>
-
-        <!-- Submit Button -->
+        <br>
         <button type="submit" class="btn btn-primary">Potvrdi Izvještaj</button>
     </form>
 </div>
 
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
+<script>
+
+    const subcategories = {
+        put: ["Oštećenja na putu", "Rupa na putu", "Nepropisno postavljeni znakovi"],
+        osvetljenje: ["Neispravna ulična svetiljka", "Nepostojanje svetiljki na određenom području", "Oštećenja svetlosnih stubova"],
+        vodovod: ["Curenje vode", "Zagušenje kanalizacije", "Neispravni hidranti"],
+        zelenilo: ["Oštećena drveća ili grmlje", "Nedostatak održavanja parkova", "Neispravno postavljeni smeštaj za smeće"],
+        signalizacija: ["Neispravni semafori", "Oštećeni saobraćajni znakovi", "Problem sa horizontalnom signalizacijom (prijelazi, strelice)"],
+        deca: ["Oštećenja na dečjim igralištima", "Nedostatak održavanja", "Bezbednosni problemi"],
+        reciklaza: ["Nedostatak kontejnera za smeće", "Divlje deponije", "Problemi sa reciklažom"],
+        vandalizam: ["Grafiti na javnim površinama", "Oštećenje infrastrukture od strane vandala", "Nelegalni plakati"],
+        zagađenje: ["Buka sa saobraćajnica", "Zagađenje vazduha ili vode", "Problemi sa reciklažom"],
+        ostalo: ["Bilo koji drugi problem koji se ne uklapa u gore navedene kategorije."]
+    };
+
+    function populateSubcategories() {
+        const categorySelect = document.getElementById("category");
+        const subcategorySelect = document.getElementById("subcategory");
+        const selectedCategory = categorySelect.value;
+
+        if (selectedCategory in subcategories) {
+            const subcategoriesArray = subcategories[selectedCategory];
+
+            // Clear previous options
+            subcategorySelect.innerHTML = "";
+
+            // Add new options
+            subcategoriesArray.forEach(subcategory => {
+                const option = document.createElement("option");
+                option.value = subcategory;
+                option.text = subcategory;
+                subcategorySelect.add(option);
+            });
+
+            // Show subcategory container
+            document.getElementById("subcategories-container").style.display = "block";
+        } else {
+            // Hide subcategory container if the selected category has no subcategories
+            document.getElementById("subcategories-container").style.display = "none";
+        }
+    }
+
+    // Inicijalizacija mape
+    const map = L.map('map').setView([43.8563, 18.4131], 12);
+
+    // Dodajte OpenStreetMap.Mapnik sloj (regular map)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Dodajte marker sloj
+    const markerLayer = L.layerGroup().addTo(map);
+
+    // Inicijalizacija promenljivih za cuvanje koordinata
+    let lastClickedCoordinates = null;
+
+    // Dodajte "klik" događaj na mapu
+    map.on('click', function (event) {
+        // Uklonite prethodne markere ako postoje
+        markerLayer.clearLayers();
+
+        // Sačuvajte koordinate u promenljivama
+        const coordinates = {
+            lat: event.latlng.lat,
+            lng: event.latlng.lng
+        };
+        console.log(coordinates);
+
+        // Postavite marker na mesto klika
+        const marker = L.marker(coordinates).addTo(markerLayer);
+
+        // Sačuvajte koordinate u promenljivama
+        lastClickedCoordinates = coordinates;
+
+        // Ovde možete dalje manipulisati sa markerom ili koordinatama
+        console.log('Poslednje kliknute koordinate:', lastClickedCoordinates);
+    });
+</script>
 </body>
+
 </html>
